@@ -455,8 +455,9 @@ def extract_first_code(output_string: str, code_language_types: list[str]) -> st
     """
     trimmed = output_string.strip()
 
-    # Extracting the first occurrence of content between backticks
-    code_match = re.search(r"```(.*?)```", trimmed, re.DOTALL)
+    # Extracting the first occurrence of content between backticks or until the end of the string
+    code_match = re.search(r"```(.*?)(```|$)", trimmed, re.DOTALL)
+
 
     if code_match:
         # Strip leading and trailing whitespace from the extracted code

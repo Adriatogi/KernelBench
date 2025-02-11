@@ -242,7 +242,9 @@ def build_compile_cache(
         if verbose:
             print(f"[Compilation] Compilation Successful, saved cache at: {build_dir}")
     except Exception as e:
-        print(f"[Compilation] Failed to compile custom CUDA kernel. Unable to cache, \nError: {e}")
+        print(
+            f"[Compilation] Failed to compile custom CUDA kernel. Unable to cache, \nError: {e}"
+        )
         return False, stdout_buffer.getvalue(), str(e)
 
     return True, stdout_buffer.getvalue(), None
@@ -300,7 +302,9 @@ def eval_kernel_against_ref(
     verbose: bool = False,
     measure_performance: bool = False,
     build_dir: os.PathLike = None,
-    device: torch.device = torch.cuda.current_device() if torch.cuda.is_available() else None, # have to run on GPU
+    device: torch.device = (
+        torch.cuda.current_device() if torch.cuda.is_available() else None
+    ),  # have to run on GPU
 ) -> KernelExecResult:
     """
     Evaluate the custom kernel against the original model
@@ -464,7 +468,7 @@ def register_and_format_exception(
     metadata: dict,
     verbose: bool = False,
     truncate=False,
-    max_length=200,
+    max_length=1000,
 ):
     """
     max_length characters
@@ -678,11 +682,13 @@ def check_metadata_serializable(metadata: dict):
 
     return metadata
 
+
 def check_metadata_serializable_all_types(metadata: dict):
     """
     Ensure metadata is JSON serializable,
     if not, convert non-serializable values to strings recursively
     """
+
     def convert_to_serializable(obj):
         if isinstance(obj, dict):
             return {k: convert_to_serializable(v) for k, v in obj.items()}
